@@ -76,29 +76,36 @@ export default function Home() {
         el.style.transition = `opacity 0.8s ease ${i * 0.12}s, transform 0.8s ease ${i * 0.12}s`
         el.style.opacity = '1'
         el.style.transform = 'translateY(0)'
-      }, 200)
+        // 4500ms delay ensures particles form completely before text appears
+      }, 4500) 
     })
   }, [])
 
   return (
-    <main style={{ background: '#F1EFE9', color: '#1a1a1a', minHeight: '100vh', overflowX: 'hidden' }}>
+    <main ref={contentRef} style={{ background: '#F1EFE9', color: '#1a1a1a', minHeight: '100vh', overflowX: 'hidden', position: 'relative' }}>
       <Navbar />
+      
+      {/* 1. ANIMATION LAYER (Fixed in background) */}
+      <LogoScene />
 
-      {/* 1. ANIMATION HERO AREA */}
+      {/* 2. HERO SPACER 
+          This creates the empty 100vh room where the big particle text 
+          forms. It is transparent to let the LogoScene show through.
+      */}
       <section style={{ 
         width: '100%', 
-        height: '550px', 
+        height: '100vh', 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center',
-        paddingTop: '80px',
-        borderBottom: '1px solid rgba(0,0,0,0.05)'
-      }}>
-        <LogoScene />
-      </section>
+        background: 'transparent',
+        pointerEvents: 'none'
+      }} />
 
-      {/* 2. HERO CONTENT SECTION */}
-      <section ref={contentRef} style={{ padding: '6rem 1.5rem', textAlign: 'center' }}>
+      {/* 3. HERO CONTENT SECTION 
+          This section appears after the particles are formed.
+      */}
+      <section style={{ padding: '6rem 1.5rem', textAlign: 'center', position: 'relative', zIndex: 2 }}>
         <div className="animate-in" style={{ letterSpacing: '0.4em', color: '#888', fontSize: '0.8rem', marginBottom: '1.5rem' }}>
           VASAVI COLLEGE OF ENGINEERING (A)
         </div>
@@ -119,9 +126,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. COUNTDOWN SECTION */}
-      <section style={{ padding: '4rem 1.5rem' }}>
-        <div style={{
+      {/* 4. COUNTDOWN SECTION */}
+      <section style={{ padding: '4rem 1.5rem', position: 'relative', zIndex: 2 }}>
+        <div className="animate-in" style={{
           background: '#ffffff',
           borderRadius: '40px',
           padding: '4rem 2rem',
@@ -136,15 +143,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. THE TEAM SECTION */}
-      <section style={{ padding: '8rem 1.5rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+      {/* 5. THE TEAM SECTION */}
+      <section style={{ padding: '8rem 1.5rem', position: 'relative', zIndex: 2 }}>
+        <div className="animate-in" style={{ textAlign: 'center', marginBottom: '5rem' }}>
           <h2 style={{ fontSize: '3.5rem', fontWeight: 800, letterSpacing: '-0.04em' }}>The Team</h2>
           <p style={{ color: '#888', fontSize: '1.1rem' }}>The minds driving Acumen IT 2026</p>
         </div>
 
         {/* SUB-SECTION: MENTORS */}
-        <div style={{ marginBottom: '6rem' }}>
+        <div className="animate-in" style={{ marginBottom: '6rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '3rem', justifyContent: 'center' }}>
             <div style={{ height: '1px', background: 'rgba(0,0,0,0.08)', flex: 1, maxWidth: '100px' }} />
             <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#888' }}>
@@ -158,7 +165,7 @@ export default function Home() {
         </div>
 
         {/* SUB-SECTION: COORDINATORS */}
-        <div>
+        <div className="animate-in">
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '3rem', justifyContent: 'center' }}>
             <div style={{ height: '1px', background: 'rgba(0,0,0,0.08)', flex: 1, maxWidth: '100px' }} />
             <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#888' }}>
@@ -172,19 +179,102 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. FOOTER */}
+      {/* 6. FOOTER */}
       <footer style={{
-        padding: '6rem 1.5rem 3rem',
-        borderTop: '1px solid rgba(0,0,0,0.06)',
-        textAlign: 'center',
-        background: '#ffffff'
+        padding: '5rem 1.5rem 3rem',
+        background: '#F1EFE9', 
+        borderTop: '1px solid rgba(0,0,0,0.1)',
+        marginTop: '4rem',
+        position: 'relative',
+        zIndex: 2
       }}>
-        <div style={{ marginBottom: '2rem', fontWeight: 800, fontSize: '1.5rem' }}>ACUMEN IT</div>
-        <p style={{ color: '#999', fontSize: '0.85rem', maxWidth: '500px', margin: '0 auto 2rem' }}>
-          Organized by the Department of Information Technology, Vasavi College of Engineering (Autonomous).
-        </p>
-        <div style={{ fontSize: '0.75rem', color: '#bbb', letterSpacing: '0.1em' }}>
-          © 2026 ALL RIGHTS RESERVED
+        <div style={{ 
+          maxWidth: '1200px', 
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4rem'
+        }}>
+          {/* Top Row: Branding and Main Links */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            flexWrap: 'wrap',
+            gap: '2rem'
+          }}>
+            <div style={{ maxWidth: '300px' }}>
+              <div style={{ 
+                fontFamily: 'var(--font-display)', 
+                fontWeight: 800, 
+                fontSize: '1.8rem', 
+                letterSpacing: '-0.02em',
+                marginBottom: '1rem'
+              }}>
+                ACUMEN IT <span style={{ fontWeight: 400, color: '#888' }}>2026</span>
+              </div>
+              <p style={{ 
+                color: '#666', 
+                fontSize: '0.9rem', 
+                lineHeight: 1.6,
+                fontFamily: 'var(--font-display)'
+              }}>
+                Pushing the boundaries of innovation at the intersection of technology and creativity.
+              </p>
+            </div>
+
+            {/* Quick Navigation Links */}
+            <div style={{ display: 'flex', gap: '4rem', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#999', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Navigation</p>
+                <Link to="/" style={{ textDecoration: 'none', color: '#000', fontWeight: 600, fontSize: '0.9rem' }}>Home</Link>
+                <Link to="/events" style={{ textDecoration: 'none', color: '#000', fontWeight: 600, fontSize: '0.9rem' }}>Events</Link>
+                <Link to="/register" style={{ textDecoration: 'none', color: '#000', fontWeight: 600, fontSize: '0.9rem' }}>Register</Link>
+              </div>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#999', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Venue</p>
+                <p style={{ color: '#000', fontWeight: 600, fontSize: '0.9rem', margin: 0 }}>Vasavi College of Engineering</p>
+                <p style={{ color: '#666', fontSize: '0.85rem', margin: 0 }}>Ibrahimbagh, Hyderabad</p>
+                <p style={{ color: '#666', fontSize: '0.85rem', margin: 0 }}>Telangana, 500031</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Row: Institutional Info and Copyright */}
+          <div style={{
+            borderTop: '1px solid rgba(0,0,0,0.06)',
+            paddingTop: '2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1.5rem'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+              <div style={{ width: '30px', height: '1px', background: '#ccc' }} />
+              <p style={{ 
+                fontFamily: 'var(--font-mono)', 
+                fontSize: '0.7rem', 
+                color: '#888', 
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                margin: 0
+              }}>
+                Dept. of Information Technology
+              </p>
+            </div>
+
+            <p style={{ 
+              fontFamily: 'var(--font-mono)', 
+              fontSize: '0.7rem', 
+              color: '#bbb', 
+              letterSpacing: '0.05em',
+              margin: 0
+            }}>
+              © 2026 ACUMEN IT · ALL RIGHTS RESERVED
+            </p>
+          </div>
         </div>
       </footer>
     </main>
