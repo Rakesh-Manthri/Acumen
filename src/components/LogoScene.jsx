@@ -4,173 +4,188 @@ import { gsap } from 'gsap';
 
 const LogoScene = () => {
   const mountRef = useRef(null);
-  const isRotating = useRef(true); 
+  const isFormed = useRef(false);
+  const scrollProgress = useRef(0);
+  const introProgress = useRef(0);
+
+  const state = useRef({
+    count: 0,
+    whirlpoolArray: null,
+    centerArray: null,
+    headerArray: null,
+    basePoints: []
+  });
 
   useEffect(() => {
-    // Basic Scene Setup - ENSURE TRANSPARENT BG
-    const scene = new THREE.Scene();
-    scene.background = null; // Important: Make Three.js background transparent
+    let renderer, scene, camera, points;
 
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 550, 0.1, 1000);
-    camera.position.z = 25; // Adjusted depth for better visual fit
+    const getVisibleSize = () => {
+      const vFOV = (camera.fov * Math.PI) / 180;
+      const height = 2 * Math.tan(vFOV / 2) * camera.position.z;
+      const width = height * camera.aspect;
+      return { width, height };
+    };
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); // Enable Alpha for transparency
-    renderer.setSize(window.innerWidth, 550); // Set height to match CSS container
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    mountRef.current.appendChild(renderer.domElement);
+    const computeLayout = () => {
+  if (!camera) return;
+  const { width, height } = getVisibleSize();
+  const isMobile = window.innerWidth < 768;
 
-    // 1. Text Sampling Function (High Density)
-    const getTextPoints = (text) => {
+  // --- 1. SCALE CALCULATION ---
+  const heroWidth = isMobile ? width * 0.92 : width * 0.8;
+  const heroScale = heroWidth / 1600; 
+
+  // Keeping the mobile scale we bumped last time
+  const headerWidth = isMobile ? width * 0.55 : width * 0.14; 
+  const headerScale = headerWidth / 1600;
+
+  // --- 2. VERTICAL OFFSET CALCULATION ---
+  const heroYOffset = height * 0.08; 
+
+  /* THE PRECISION ALIGNMENT FIX:
+    Desktop (isMobile = false): Increased from 0.82 to 0.86 to pull it UP.
+    Mobile (isMobile = true): Decreased from 0.88 to 0.82 to push it DOWN.
+  */
+  const desktopHeaderPos = (height / 2) * 0.84; 
+  const mobileHeaderPos = (height / 2) * 0.87;
+  const headerYOffset = isMobile ? mobileHeaderPos : desktopHeaderPos;
+
+  const { basePoints, count } = state.current;
+  const newCenter = new Float32Array(count * 3);
+  const newHeader = new Float32Array(count * 3);
+
+  for (let i = 0; i < count; i++) {
+    const i3 = i * 3;
+    // Hero positions
+    newCenter[i3] = basePoints[i].x * heroScale;
+    newCenter[i3 + 1] = basePoints[i].y * heroScale + heroYOffset; 
+    newCenter[i3 + 2] = 0;
+
+    // Header positions (Destination)
+    newHeader[i3] = basePoints[i].x * headerScale;
+    newHeader[i3 + 1] = basePoints[i].y * headerScale + headerYOffset;
+    newHeader[i3 + 2] = 0;
+  }
+  state.current.centerArray = newCenter;
+  state.current.headerArray = newHeader;
+};
+
+    const init = async () => {
+      await document.fonts.ready;
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 30; 
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      mountRef.current.appendChild(renderer.domElement);
+
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      // Larger canvas for better resolution sampling
-      canvas.width = 1200; 
-      canvas.height = 300;
-      
+      canvas.width = 1600; canvas.height = 400;
       ctx.fillStyle = 'black';
-      // Adjust font size/weight here if needed
-      ctx.font = 'bold 120px Montserrat, Arial, sans-serif'; 
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(text, 600, 150);
+      ctx.font = '900 180px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText("ACUMEN IT", 800, 200);
 
-      const imageData = ctx.getImageData(0, 0, 1200, 300).data;
-      const points = [];
-      // Step 2 is high density (~30k particles), Step 1 is ultra-high (~100k)
-      for (let y = 0; y < 300; y += 2) { 
-        for (let x = 0; x < 1200; x += 2) {
-          const alpha = imageData[(y * 1200 + x) * 4 + 3];
-          if (alpha > 128) {
-            points.push({
-              x: (x - 600) * 0.06,
-              y: (150 - y) * 0.06,
-              z: 0
-            });
-          }
+      const imageData = ctx.getImageData(0, 0, 1600, 400).data;
+      const pts = [];
+      const step = window.innerWidth < 768 ? 2 : 1; 
+      for (let y = 0; y < 400; y += step) {
+        for (let x = 0; x < 1600; x += step) {
+          if (imageData[(y * 1600 + x) * 4 + 3] > 128) pts.push({ x: x - 800, y: 200 - y });
         }
       }
-      return points;
-    };
 
-    const textCoords = getTextPoints("ACUMEN IT");
-    const count = textCoords.length;
+      state.current.basePoints = pts;
+      const count = pts.length;
+      state.current.count = count;
 
-    // 2. Setting up Geometry with Centering Offset
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(count * 3);
-    const targetPositions = new Float32Array(count * 3);
+      const positions = new Float32Array(count * 3);
+      const whirlpool = new Float32Array(count * 3);
 
-    // A separate geometry to calculate the true center of the particle cloud
-    const targetGeometryForCentering = new THREE.BufferGeometry();
-    const targetPositionsForCalc = new Float32Array(count * 3);
-
-    for (let i = 0; i < count; i++) {
-      const i3 = i * 3;
-      // Define whirlpool starting positions
-      const angle = i * 0.02;
-      const radius = 0.1 * angle + Math.random() * 8;
-      positions[i3] = Math.cos(angle) * radius;
-      positions[i3 + 1] = (Math.random() - 0.5) * 40;
-      positions[i3 + 2] = Math.sin(angle) * radius;
-
-      // Define target (text) positions
-      targetPositions[i3] = textCoords[i].x;
-      targetPositions[i3 + 1] = textCoords[i].y;
-      targetPositions[i3 + 2] = textCoords[i].z;
-
-      // Also set the calculation geometry
-      targetPositionsForCalc[i3] = textCoords[i].x;
-      targetPositionsForCalc[i3 + 1] = textCoords[i].y;
-      targetPositionsForCalc[i3 + 2] = textCoords[i].z;
-    }
-
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    targetGeometryForCentering.setAttribute('position', new THREE.BufferAttribute(targetPositionsForCalc, 3));
-    
-    // THE FIX: Calculate true center of the particle system
-    targetGeometryForCentering.computeBoundingBox();
-    const centerOffset = new THREE.Vector3();
-    targetGeometryForCentering.boundingBox.getCenter(centerOffset);
-    // Move camera to look at the offset, or shift the points. Moving points is easier here.
-    // We will apply this offset inside the GSAP tween.
-
-    const material = new THREE.PointsMaterial({ 
-      color: 0x000000, 
-      size: 0.06, // Smaller size for more particles looks premium
-      transparent: true,
-      opacity: 0.8
-    });
-    
-    const points = new THREE.Points(geometry, material);
-    scene.add(points);
-
-    // 3. Animation and Morph Tween
-    const tl = gsap.timeline();
-
-    // The core tween with centering adjustment applied to targetPositions
-    const currentPositions = points.geometry.attributes.position.array;
-    const finalTarget = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
+      for (let i = 0; i < count; i++) {
         const i3 = i * 3;
-        finalTarget[i3] = targetPositions[i3] - centerOffset.x;
-        finalTarget[i3 + 1] = targetPositions[i3+1] - centerOffset.y;
-        finalTarget[i3 + 2] = targetPositions[i3+2];
-    }
-
-    tl.to(currentPositions, {
-      endArray: finalTarget, // Use the adjusted target array
-      duration: 5,
-      delay: 1,
-      ease: "power4.inOut",
-      onUpdate: () => {
-        points.geometry.attributes.position.needsUpdate = true;
-      },
-      onComplete: () => {
-        // SMOOTH STOP: Fade out the rotation flag
-        gsap.to(isRotating, { current: false, duration: 1 });
-        // Ensure final rotation snaps perfectly to face front
-        gsap.to(points.rotation, { y: 0, duration: 1.5, ease: "power2.out" });
+        const angle = i * 0.02;
+        const radius = 0.1 * angle + Math.random() * 20;
+        positions[i3] = whirlpool[i3] = Math.cos(angle) * radius;
+        positions[i3 + 1] = whirlpool[i3 + 1] = (Math.random() - 0.5) * 80;
+        positions[i3 + 2] = whirlpool[i3 + 2] = Math.sin(angle) * radius;
       }
-    });
+      state.current.whirlpoolArray = whirlpool;
 
-    const animate = () => {
-      requestAnimationFrame(animate);
-      if (isRotating.current) {
-        points.rotation.y += 0.008; // Whirlpool rotation speed
-      }
-      renderer.render(scene, camera);
+      computeLayout();
+
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const material = new THREE.PointsMaterial({ color: 0x000000, size: 0.12, transparent: true, opacity: 0.9 });
+      points = new THREE.Points(geometry, material);
+      scene.add(points);
+
+      // Intro Morph: Whirlpool -> Hero
+      gsap.to(introProgress, {
+        current: 1,
+        duration: 4,
+        ease: "power4.inOut",
+        onComplete: () => { isFormed.current = true; }
+      });
+
+      gsap.to(points.rotation, { y: Math.PI * 4, duration: 4, ease: "power4.inOut" });
+
+      const animate = () => {
+        requestAnimationFrame(animate);
+        
+        if (points) {
+          const posAttr = points.geometry.attributes.position.array;
+          const { whirlpoolArray, centerArray, headerArray } = state.current;
+          
+          const intro = introProgress.current;
+          const scroll = scrollProgress.current;
+
+          for (let i = 0; i < count * 3; i++) {
+            // 1. Where should it be if it were only hero vs header?
+            const targetPos = centerArray[i] + (headerArray[i] - centerArray[i]) * scroll;
+            
+            // 2. Interpolate from Whirlpool to that Target based on Intro progress
+            posAttr[i] = whirlpoolArray[i] + (targetPos - whirlpoolArray[i]) * intro;
+          }
+          points.geometry.attributes.position.needsUpdate = true;
+          
+          // Shrink size slightly as it hits the header
+          points.material.size = 0.12 - (scroll * 0.04);
+        }
+
+        renderer.render(scene, camera);
+      };
+      animate();
     };
-    animate();
 
-    // 4. Handle Resize and Cleanup
+    const handleScroll = () => {
+      // Tie scroll directly to a 0-1 value
+      scrollProgress.current = Math.min(window.scrollY / 450, 1);
+    };
+
     const handleResize = () => {
-      camera.aspect = window.innerWidth / 550;
+      camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, 550);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      computeLayout(); 
     };
+
+    init();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleResize);
 
     return () => {
+      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement);
-      }
-      geometry.dispose();
-      material.dispose();
-      targetGeometryForCentering.dispose();
+      mountRef.current?.removeChild(renderer?.domElement);
     };
   }, []);
 
   return (
-    <div 
-      ref={mountRef} 
-      style={{ 
-        width: '100%', 
-        height: '550px', // Match the height in Home.jsx exactly
-        overflow: 'hidden',
-        // Minimal CSS required; Three.js fills this container
-      }} 
-    />
+    <div ref={mountRef} style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 1000, pointerEvents: 'none' }} />
   );
 };
 
