@@ -17,19 +17,19 @@ export default function Navbar() {
           justifyContent: 'center',
           alignItems: 'center',
           pointerEvents: 'auto',
-          backgroundColor: 'rgba(0, 245, 255, 0.02)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          border: '1px solid rgba(0, 245, 255, 0.08)',
+          backgroundColor: 'rgba(255, 255, 255, 0.4)', // Frosted Light Glass
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid rgba(0, 0, 0, 0.05)',
           borderRadius: '30px',
-          padding: '1.5rem',
-          color: '#00f5ff',
+          padding: '1.2rem',
+          color: '#000', // Solid Black
           fontWeight: 800,
           fontFamily: 'var(--font-display)',
-          fontSize: '1.8rem',
-          letterSpacing: '0.15em',
+          fontSize: '1.6rem',
+          letterSpacing: '0.2em',
           textTransform: 'uppercase',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.2), inset 0 1px 0 rgba(0,245,255,0.05)'
+          boxShadow: '0 10px 40px rgba(0,0,0,0.03)'
       }}>
         Acumen IT
       </div>
@@ -45,31 +45,30 @@ export default function Navbar() {
         justifyContent: 'center',
         pointerEvents: 'none'
       }}>
-      {/* Interactive Wrapper holding all three pills */}
       <div 
         className="nav-group-wrapper"
         style={{ display: 'flex', alignItems: 'flex-end', pointerEvents: 'auto' }}
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
       >
-        {/* AIT Oval Outside Menu */}
+        {/* AIT Pill */}
         <div 
           className="ait-pill" 
           style={{
             opacity: isOpen ? 1 : 0,
             pointerEvents: isOpen ? 'auto' : 'none',
             transform: isOpen ? 'translateX(0) scale(1)' : 'translateX(10px) scale(0.9)',
-            transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-            backgroundColor: 'var(--glass-bg)',
+            transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
             backdropFilter: 'blur(20px)',
-            border: '1px solid var(--border-subtle)',
+            border: '1px solid rgba(0, 0, 0, 0.08)',
             borderRadius: '40px',
-            color: 'var(--text-primary)',
+            color: '#000',
             fontWeight: 800,
             fontFamily: 'var(--font-display)',
-            fontSize: '1rem',
+            fontSize: '0.9rem',
             letterSpacing: '0.1em',
-            boxShadow: '0 10px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3)',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
@@ -81,13 +80,13 @@ export default function Navbar() {
         <div 
           className={`menu-pill ${isOpen ? 'open' : ''}`}
           style={{
-            backgroundColor: 'var(--glass-bg)',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid var(--border-subtle)',
-            color: 'var(--text-primary)',
-            boxShadow: '0 10px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3)',
-            transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
+            border: '1px solid rgba(0, 0, 0, 0.08)',
+            color: '#000',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+            transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -97,30 +96,28 @@ export default function Navbar() {
           }}
           onClick={() => !isOpen && setIsOpen(true)}
         >
-          {/* Menu Default State */}
           <div style={{
             position: 'absolute',
             opacity: isOpen ? 0 : 1,
             pointerEvents: isOpen ? 'none' : 'auto',
             transform: isOpen ? 'scale(0.95)' : 'scale(1)',
-            transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+            transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
             fontWeight: 700,
-            fontSize: '1rem',
-            letterSpacing: '0.05em',
+            fontSize: '0.9rem',
+            letterSpacing: '0.1em',
             fontFamily: 'var(--font-display)',
             textTransform: 'uppercase'
           }}>
             Menu
           </div>
 
-          {/* Expanded Links State */}
           <div className="links-container" style={{ 
             position: 'absolute',
             display: 'flex',
             opacity: isOpen ? 1 : 0,
             pointerEvents: isOpen ? 'auto' : 'none',
             transform: isOpen ? 'scale(1)' : 'scale(1.05)',
-            transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+            transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
             alignItems: 'center', 
             justifyContent: 'center',
             width: '100%',
@@ -129,120 +126,73 @@ export default function Navbar() {
             <NavLink to="/" end onClick={() => setIsOpen(false)} className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Home</NavLink>
             <NavLink to="/events" onClick={() => setIsOpen(false)} className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Events</NavLink>
             <NavLink to="/register" onClick={() => setIsOpen(false)} className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Register</NavLink>
-            <a 
-              href="#"
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(false); }}
+            <span 
+              onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
               className="nav-link"
+              style={{ cursor: 'pointer', color: '#999' }}
             >
-              Close
-            </a>
+              ×
+            </span>
           </div>
         </div>
 
-        {/* Theme Oval Outside Menu */}
+        {/* Theme Pill */}
         <div 
           className="theme-pill"
-          onClick={() => {
-             document.body.classList.toggle('light-theme');
-          }}
+          onClick={() => document.body.classList.toggle('light-theme')}
           style={{
             opacity: isOpen ? 1 : 0,
             pointerEvents: isOpen ? 'auto' : 'none',
             transform: isOpen ? 'translateX(0) scale(1)' : 'translateX(-10px) scale(0.9)',
-            transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-            backgroundColor: 'var(--glass-bg)',
+            transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
             backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid var(--border-subtle)',
+            border: '1px solid rgba(0, 0, 0, 0.08)',
             borderRadius: '40px',
-            color: 'var(--text-primary)',
-            boxShadow: '0 10px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3)',
+            color: '#000',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer'
         }}>
-          {/* Theme Logo Visual */}
-          <div style={{ display: 'flex', gap: '5px', flexDirection: 'column', pointerEvents: 'none' }}>
-            <div style={{ width: '6px', height: '6px', backgroundColor: 'var(--text-primary)', borderRadius: '1px' }} />
-            <div style={{ width: '6px', height: '6px', backgroundColor: 'var(--text-secondary)', borderRadius: '1px' }} />
+          <div style={{ display: 'flex', gap: '4px', flexDirection: 'column' }}>
+            <div style={{ width: '12px', height: '2px', backgroundColor: '#000' }} />
+            <div style={{ width: '8px', height: '2px', backgroundColor: '#888' }} />
           </div>
         </div>
       </div>
 
       <style>{`
-        .ait-pill, .theme-pill {
-          padding: 0 1.4rem;
-          height: 54px;
-        }
-        
-        .ait-pill {
-          margin-right: 0.8rem;
-        }
+        .ait-pill, .theme-pill { padding: 0 1.4rem; height: 50px; }
+        .ait-pill { margin-right: 0.6rem; }
+        .theme-pill { margin-left: 0.6rem; }
 
-        .theme-pill {
-          margin-left: 0.8rem;
-        }
+        .menu-pill { width: 110px; height: 50px; border-radius: 100px; }
+        .menu-pill.open { width: 380px; height: 50px; }
 
-        .menu-pill {
-          width: 130px;
-          height: 54px;
-          border-radius: 100px;
-        }
-
-        .menu-pill.open {
-          width: 410px;
-          height: 54px;
-        }
-
-        .links-container {
-          flex-direction: row;
-          gap: 0.2rem;
-        }
+        .links-container { gap: 0.5rem; }
 
         .nav-link {
-          color: var(--text-secondary);
+          color: #666;
           text-decoration: none;
           font-family: var(--font-display);
-          font-weight: 600;
-          font-size: 0.9rem;
-          padding: 0.5rem 1rem;
+          font-weight: 700;
+          font-size: 0.85rem;
+          padding: 0.5rem 1.2rem;
           border-radius: 40px;
-          transition: all 0.4s ease;
+          transition: all 0.3s ease;
           white-space: nowrap;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
         }
-        .nav-link:hover {
-          color: var(--text-primary);
-          background: rgba(0,0,0,0.05);
-        }
-        .nav-link.active {
-          color: #fff;
-          background: var(--accent-violet);
-        }
+        .nav-link:hover { color: #000; background: rgba(0,0,0,0.04); }
+        .nav-link.active { color: #fff; background: #000; }
 
         @media (max-width: 640px) {
-          .menu-pill.open {
-            width: 160px;
-            height: 240px;
-            border-radius: 28px;
-          }
-          .links-container {
-            flex-direction: column;
-            gap: 0.5rem;
-          }
-          .nav-link {
-            width: 80%;
-            text-align: center;
-            padding: 0.6rem;
-          }
-          .ait-pill {
-            margin-right: 0.4rem;
-            padding: 0 1rem;
-          }
-          .theme-pill {
-            margin-left: 0.4rem;
-            padding: 0 1rem;
-          }
+          .menu-pill.open { width: 180px; height: 260px; border-radius: 30px; }
+          .links-container { flex-direction: column; gap: 0.8rem; }
+          .nav-link { width: 85%; text-align: center; }
         }
       `}</style>
       </div>

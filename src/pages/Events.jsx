@@ -19,33 +19,26 @@ export default function Events() {
   const prevScrollX = useRef(0);
   const isDraggingRef = useRef(false);
 
-  // Responsive event listener setup
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize(); // Initial check
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Responsive physics configuration
   const itemWidth = isMobile ? 210 : 360;
   const gap = isMobile ? 130 : 180;
 
   const animatedScrollX = useRef(0);
   const targetScrollX = useRef(0);
 
-  // Smooth animation loop
   useEffect(() => {
     let animationFrameId;
     const renderLoop = () => {
-      // Auto-scroll logic happens slower on mobile to preserve readable pace
       if (!isDraggingRef.current) {
         targetScrollX.current += isMobile ? 0.8 : 1.2;
       }
-
-      // Lerp (Linear Interpolation)
       animatedScrollX.current += (targetScrollX.current - animatedScrollX.current) * 0.08;
-
       setScrollX(animatedScrollX.current);
       animationFrameId = requestAnimationFrame(renderLoop);
     };
@@ -68,8 +61,6 @@ export default function Events() {
     if (!isDraggingRef.current) return;
     const clientX = e.clientX || (e.touches && e.touches[0].clientX);
     const delta = clientX - startX.current;
-
-    // Sensitivity scale depending on screen
     const dragMultiplier = isMobile ? 1.0 : 1.5;
     targetScrollX.current = prevScrollX.current - delta * dragMultiplier;
   };
@@ -81,23 +72,23 @@ export default function Events() {
 
   return (
     <div style={{
-      minHeight: isMobile ? '100vh' : '125vh',
+      minHeight: isMobile ? '100vh' : '110vh',
       width: '100vw',
       display: 'flex',
       flexDirection: 'column',
-      backgroundColor: 'var(--bg-primary)',
+      backgroundColor: '#F1EFE9', // Light Theme Background
       position: 'relative',
       overflowX: 'hidden',
       overflowY: isMobile ? 'hidden' : 'auto',
       paddingTop: '6rem'
     }}>
-      {/* Dynamic Background Glow */}
+      {/* Subtle Background Accent */}
       <div style={{
         position: 'absolute',
         top: '30%', left: '50%',
         transform: 'translate(-50%, -50%)',
         width: '70vmax', height: '70vmax',
-        background: 'radial-gradient(ellipse at center, rgba(0,245,255,0.08) 0%, transparent 60%)',
+        background: 'radial-gradient(circle, rgba(0,0,0,0.02) 0%, transparent 60%)',
         pointerEvents: 'none',
         zIndex: 0,
       }} />
@@ -108,16 +99,15 @@ export default function Events() {
         textAlign: 'center',
         fontFamily: 'var(--font-display)',
         fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-        fontWeight: 700,
-        color: 'var(--text-primary)',
-        letterSpacing: '0.02em',
+        fontWeight: 800,
+        color: '#000000', // Sharp Black
+        letterSpacing: '-0.02em',
         zIndex: 2,
         position: 'relative'
       }}>
         Event Schedule
       </h1>
 
-      {/* Infinite Panoramic Slider Track */}
       <div
         ref={containerRef}
         onPointerDown={handlePointerDown}
@@ -128,7 +118,7 @@ export default function Events() {
         onTouchMove={handlePointerMove}
         onTouchEnd={handlePointerUp}
         style={{
-          height: '600px', // Strict container to anchor drags securely inside scrollable view
+          height: '600px',
           width: '100%',
           position: 'relative',
           display: 'flex',
@@ -148,34 +138,19 @@ export default function Events() {
           const normalizedDistance = wrappedDistance / gap;
           const absDist = Math.abs(normalizedDistance);
 
-          // --- 'Spin & See' Exact Carousel Physics ---
-
-          // 1. Asymptotic Positional Gathering (Clustering)
-          // Elements fold backward progressively tightening together rather than distancing linearly
           const baseSpread = isMobile ? 140 : 280;
           const exponentialShift = baseSpread * Math.log(1 + absDist * 1.5);
-
-          // normalizedDistance > 0 means the item physically lives to the left!
           const translateX = Math.sign(normalizedDistance) * -exponentialShift;
 
-          // 2. Aggressive Parabolic Scale Drop
-          // Center is nearly 1.0, neighbors shrink exponentially
           const scale = Math.max(0, 1 - absDist * 0.1 - Math.pow(absDist, 1.4) * 0.1);
-
-          // 3. Z-Index enforcing precise depth hierarchy
           const zIndex = 100 - Math.round(absDist * 10);
-
-          // 4. Ghosting (Opacity)
-          // Primary side cards remain 100% opaque, fading rapidly only at the deep loop edges so they don't visibly pop across the toroid back.
           const opacity = absDist >= 2.5 ? Math.max(0, 1 - (absDist - 2.5) * 2) : 1;
 
-          // 5. Cinematic Vertical Squish (Clip Path distortion)
-          // Hits high values like 30% only when pushed backwards in the stack
           const clipY = Math.min(30, Math.pow(absDist, 1.4) * 7);
-          const clipPath = `inset(${clipY}% 0% round 16px)`;
+          const clipPath = `inset(${clipY}% 0% round 24px)`; // Increased roundness for light theme
 
-          // Lighting map
-          const brightness = Math.max(0.3, 1 - absDist * 0.4);
+          // Smoother lighting for light theme
+          const brightness = Math.max(0.6, 1 - absDist * 0.2);
 
           return (
             <div
@@ -191,17 +166,16 @@ export default function Events() {
                 pointerEvents: isDragging ? 'none' : 'auto'
               }}
             >
-              {/* Asset Mask */}
               <div style={{
                 position: 'relative',
                 width: '100%',
                 height: '100%',
                 clipPath: clipPath,
                 overflow: 'hidden',
-                backgroundColor: 'black',
-                boxShadow: absDist < 0.5 ? '0 20px 60px rgba(0,0,0,0.6)' : 'none',
+                backgroundColor: '#ffffff', // White base for images
+                boxShadow: absDist < 0.5 ? '0 30px 60px rgba(0,0,0,0.12)' : 'none',
                 filter: `brightness(${brightness})`,
-                transition: 'none'
+                transition: 'filter 0.3s ease'
               }}>
                 <img
                   src={event.img}
@@ -217,33 +191,33 @@ export default function Events() {
                 />
               </div>
 
-              {/* Dynamic Metadata Block */}
+              {/* Light Theme Metadata Block */}
               <div style={{
                 position: 'absolute',
-                bottom: isMobile ? '-4rem' : '-5rem',
+                bottom: isMobile ? '-4.5rem' : '-5.5rem',
                 left: 0,
                 width: '100%',
                 textAlign: 'center',
-                opacity: absDist < 0.6 ? 1 - absDist * 1.6 : 0,
-                transform: `translateY(${absDist * 15}px)`,
+                opacity: absDist < 0.6 ? 1 - absDist * 1.8 : 0,
+                transform: `translateY(${absDist * 12}px)`,
                 pointerEvents: 'none'
               }}>
                 <div style={{
                   fontFamily: 'var(--font-display)',
-                  color: 'white',
-                  fontSize: isMobile ? '1.2rem' : '1.6rem',
+                  color: '#000000', // Black text
+                  fontSize: isMobile ? '1.25rem' : '1.75rem',
                   fontWeight: 800,
-                  letterSpacing: '0.02em',
-                  textShadow: '0 4px 20px rgba(0,0,0,0.8)'
+                  letterSpacing: '-0.01em'
                 }}>
                   {event.title}
                 </div>
                 <div style={{
                   fontFamily: 'var(--font-mono)',
-                  color: '#00f5ff',
-                  fontSize: isMobile ? '0.8rem' : '0.95rem',
-                  marginTop: '0.5rem',
-                  letterSpacing: '0.15em',
+                  color: '#666666', // Muted Grey
+                  fontSize: isMobile ? '0.75rem' : '0.85rem',
+                  marginTop: '0.4rem',
+                  letterSpacing: '0.2em',
+                  fontWeight: 600,
                   textTransform: 'uppercase'
                 }}>
                   {event.subtitle}

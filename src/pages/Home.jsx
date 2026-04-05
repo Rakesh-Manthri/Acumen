@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import CountdownTimer from '../components/CountdownTimer'
+import Navbar from '../components/Navbar'
+import LogoScene from '../components/LogoScene'
 
 const mentors = [
   { name: 'Dr. S. V. Ramana', role: 'Principal', initial: 'R' },
@@ -16,377 +18,175 @@ const coordinators = [
   { name: 'Bhavana', role: 'Coordinator', initial: 'B' },
 ]
 
-function PersonCard({ name, role, initial, accent = '#00f5ff' }) {
+function PersonCard({ name, role, initial }) {
   return (
     <div style={{
-      background: 'rgba(8,8,32,0.7)',
-      border: `1px solid rgba(0,245,255,0.15)`,
-      borderRadius: '16px',
-      padding: '1.5rem 1.25rem',
+      background: '#ffffff',
+      border: `1px solid rgba(0,0,0,0.06)`,
+      borderRadius: '20px',
+      padding: '2rem 1.5rem',
       textAlign: 'center',
-      minWidth: '160px',
-      maxWidth: '190px',
+      width: '220px',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: '0.75rem',
-      backdropFilter: 'blur(10px)',
-      transition: 'all 0.3s ease',
-      flexShrink: 0,
+      gap: '1rem',
+      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+      boxShadow: '0 4px 20px rgba(0,0,0,0.02)',
     }}
       onMouseEnter={e => {
-        e.currentTarget.style.borderColor = 'rgba(0,245,255,0.4)'
-        e.currentTarget.style.transform = 'translateY(-4px)'
-        e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,245,255,0.1)'
+        e.currentTarget.style.transform = 'translateY(-8px)'
+        e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.06)'
+        e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)'
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.borderColor = 'rgba(0,245,255,0.15)'
         e.currentTarget.style.transform = 'translateY(0)'
-        e.currentTarget.style.boxShadow = 'none'
+        e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.02)'
+        e.currentTarget.style.borderColor = 'rgba(0,0,0,0.06)'
       }}
     >
       <div style={{
-        width: 64, height: 64,
+        width: 70, height: 70,
         borderRadius: '50%',
-        background: 'linear-gradient(135deg, rgba(0,245,255,0.15), rgba(124,58,237,0.2))',
-        border: '2px solid rgba(0,245,255,0.3)',
+        background: '#1a1a1a',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontFamily: 'var(--font-display)',
         fontWeight: 700,
         fontSize: '1.5rem',
-        color: '#00f5ff',
-        boxShadow: '0 0 20px rgba(0,245,255,0.15)',
+        color: '#F1EFE9',
       }}>
         {initial}
       </div>
       <div>
-        <p style={{
-          fontFamily: 'var(--font-display)',
-          fontWeight: 600,
-          fontSize: '0.9rem',
-          color: '#f0f4ff',
-          marginBottom: '0.2rem',
-        }}>{name}</p>
-        <p style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.68rem',
-          color: 'rgba(0,245,255,0.7)',
-          letterSpacing: '0.05em',
-        }}>{role}</p>
+        <p style={{ fontWeight: 700, fontSize: '1rem', color: '#000', marginBottom: '0.25rem' }}>{name}</p>
+        <p style={{ fontSize: '0.75rem', color: '#666', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{role}</p>
       </div>
     </div>
   )
 }
 
 export default function Home() {
-  const heroTextRef = useRef(null)
+  const contentRef = useRef(null)
 
   useEffect(() => {
-    // Simple fade-in animation without GSAP dependency issues
-    const elements = heroTextRef.current?.querySelectorAll('.animate-in')
+    const elements = contentRef.current?.querySelectorAll('.animate-in')
     elements?.forEach((el, i) => {
       el.style.opacity = '0'
-      el.style.transform = 'translateY(30px)'
+      el.style.transform = 'translateY(20px)'
       setTimeout(() => {
-        el.style.transition = `opacity 0.7s ease ${i * 0.15}s, transform 0.7s ease ${i * 0.15}s`
+        el.style.transition = `opacity 0.8s ease ${i * 0.12}s, transform 0.8s ease ${i * 0.12}s`
         el.style.opacity = '1'
         el.style.transform = 'translateY(0)'
-      }, 100)
+      }, 200)
     })
   }, [])
 
   return (
-    <main style={{ overflowX: 'hidden' }}>
+    <main style={{ background: '#F1EFE9', color: '#1a1a1a', minHeight: '100vh', overflowX: 'hidden' }}>
+      <Navbar />
 
-      {/* ===== HERO SECTION ===== */}
-      <section style={{
-        minHeight: '100vh',
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+      {/* 1. ANIMATION HERO AREA */}
+      <section style={{ 
+        width: '100%', 
+        height: '550px', 
+        display: 'flex', 
+        alignItems: 'center', 
         justifyContent: 'center',
         paddingTop: '80px',
-        overflow: 'hidden',
+        borderBottom: '1px solid rgba(0,0,0,0.05)'
       }}>
-        {/* Radial background glow */}
-        <div style={{
-          position: 'absolute',
-          top: '20%', left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '80vmax', height: '80vmax',
-          background: 'radial-gradient(ellipse at center, rgba(124,58,237,0.12) 0%, rgba(0,245,255,0.06) 40%, transparent 70%)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }} />
-
-        {/* Grid background */}
-        <div className="grid-bg" style={{
-          position: 'absolute', inset: 0,
-          opacity: 0.5, pointerEvents: 'none', zIndex: 0,
-        }} />
-
-        <div ref={heroTextRef} 
-          className="hero-container"
-          style={{
-            position: 'relative', zIndex: 2,
-            textAlign: 'left',
-            padding: '0 clamp(1.5rem, 5vw, 6rem)',
-            maxWidth: '1300px',
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '2rem',
-          }}
-        >
-          {/* Center Column - Text Content */}
-          <div style={{ flex: 1, maxWidth: '800px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-            <div className="animate-in" style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'min(1rem, 3.5vw)',
-              letterSpacing: '0.2em',
-              color: '#00f5ff',
-              textTransform: 'uppercase',
-              marginBottom: '1rem',
-              opacity: 0,
-            }}>
-               Vasavi College of Engineering (A) &nbsp;·&nbsp; Dept. of IT
-            </div>
-
-            <h1 className="animate-in" style={{
-              fontFamily: 'var(--font-display)',
-              fontWeight: 700,
-              fontSize: 'clamp(2.5rem, 8vw, 6rem)',
-              lineHeight: 0.95,
-              letterSpacing: '-0.03em',
-              marginBottom: '1.5rem',
-              opacity: 0,
-            }}>
-              <span style={{ display: 'block', color: '#f0f4ff' }}>ACUMEN</span>
-              <span style={{
-                display: 'block',
-                background: 'linear-gradient(135deg, #00f5ff 0%, #0077ffff 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}>IT 2026</span>
-            </h1>
-
-            <p className="animate-in" style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(0.95rem, 1.8vw, 1.15rem)',
-              color: 'rgba(148,163,184,0.85)',
-              maxWidth: '520px',
-              marginBottom: '2.5rem',
-              lineHeight: 1.65,
-              opacity: 0,
-            }}>
-              The annual IT symposium that pushes the boundaries of technology, creativity, and innovation. Experience the ultimate clash of intellect and innovation.
-            </p>
-
-            <div className="animate-in" style={{
-              display: 'flex', gap: '1rem',
-              opacity: 0,
-            }}>
-              <Link to="/register" className="btn-primary" style={{ padding: '0.8rem 2.2rem', fontSize: '1rem' }}>
-                Register Now ↗
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <style>{`
-          .hero-container {
-            justify-content: center !important;
-          }
-          @media (max-width: 991px) {
-            .hero-container {
-              flex-direction: column !important;
-              text-align: center !important;
-              padding-top: 2rem !important;
-            }
-            .hero-container > div {
-              flex: 1 1 100% !important;
-              max-width: 100% !important;
-              display: flex;
-              flex-direction: column;
-              alignItems: center;
-            }
-            .hero-logo-column {
-              height: 350px !important;
-              margin-top: 1rem !important;
-              width: 100% !important;
-            }
-            .hero-container p {
-               margin-left: auto;
-               margin-right: auto;
-            }
-            .hero-container .animate-in {
-               justify-content: center !important;
-            }
-          }
-        `}</style>
-
-
+        <LogoScene />
       </section>
 
-      {/* ===== COUNTDOWN SECTION ===== */}
-      <section style={{
-        padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 8rem)',
-        textAlign: 'center',
-        position: 'relative',
-        background: 'linear-gradient(180deg, transparent, rgba(0,245,255,0.02) 50%, transparent)',
-      }}>
+      {/* 2. HERO CONTENT SECTION */}
+      <section ref={contentRef} style={{ padding: '6rem 1.5rem', textAlign: 'center' }}>
+        <div className="animate-in" style={{ letterSpacing: '0.4em', color: '#888', fontSize: '0.8rem', marginBottom: '1.5rem' }}>
+          VASAVI COLLEGE OF ENGINEERING (A)
+        </div>
+        <h1 className="animate-in" style={{ fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', fontWeight: 800, lineHeight: 1.1, marginBottom: '2rem' }}>
+          Unleash the Future of <br/> Information Technology
+        </h1>
+        <p className="animate-in" style={{ maxWidth: '650px', margin: '0 auto 3rem', color: '#555', fontSize: '1.2rem', lineHeight: 1.6 }}>
+          Experience a day of intense competition, technical workshops, and innovative displays at the premier annual IT symposium.
+        </p>
+        <div className="animate-in">
+          <Link to="/register" style={{ 
+            background: '#000', color: '#fff', padding: '1.2rem 3rem', 
+            borderRadius: '100px', fontWeight: 600, textDecoration: 'none',
+            fontSize: '1.1rem', boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
+          }}>
+            Explore Events ↗
+          </Link>
+        </div>
+      </section>
+
+      {/* 3. COUNTDOWN SECTION */}
+      <section style={{ padding: '4rem 1.5rem' }}>
         <div style={{
-          background: 'rgba(8,8,32,0.8)',
-          border: '1px solid rgba(0,245,255,0.12)',
-          borderRadius: '24px',
-          padding: 'clamp(2rem, 5vw, 3.5rem)',
-          maxWidth: '700px',
+          background: '#ffffff',
+          borderRadius: '40px',
+          padding: '4rem 2rem',
+          maxWidth: '900px',
           margin: '0 auto',
-          backdropFilter: 'blur(16px)',
-          boxShadow: '0 0 60px rgba(0,245,255,0.05)',
+          textAlign: 'center',
+          boxShadow: '0 40px 100px rgba(0,0,0,0.04)',
         }}>
-          <p style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '1.2rem',
-            letterSpacing: '0.15em',
-            color: 'rgba(0,245,255,0.7)',
-            textTransform: 'uppercase',
-            marginBottom: '1.5rem',
-          }}>📅 April 16, 2026</p>
+          <h3 style={{ fontSize: '0.9rem', letterSpacing: '0.2em', color: '#999', marginBottom: '2rem' }}>SYMPOSIUM COUNTDOWN</h3>
           <CountdownTimer />
-          <p style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '0.9rem',
-            color: 'rgba(148,163,184,0.6)',
-            marginTop: '1.5rem',
-          }}>
-            Vasavi College of Engineering — Hyderabad, Telangana
-          </p>
+          <p style={{ marginTop: '2.5rem', fontWeight: 600, color: '#333' }}>April 16, 2026 — Hyderabad, India</p>
         </div>
       </section>
 
-      {/* ===== MENTORS SECTION ===== */}
-      <section style={{
-        padding: 'clamp(3rem, 6vw, 6rem) clamp(1.5rem, 5vw, 8rem)',
-        background: 'rgba(0,245,255,0.01)',
-      }}>
-        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <p className="section-label">Our Guides</p>
-          <h2 className="section-title">
-            <span className="gradient-text">Our Mentors</span>
-          </h2>
+      {/* 4. THE TEAM SECTION */}
+      <section style={{ padding: '8rem 1.5rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+          <h2 style={{ fontSize: '3.5rem', fontWeight: 800, letterSpacing: '-0.04em' }}>The Team</h2>
+          <p style={{ color: '#888', fontSize: '1.1rem' }}>The minds driving Acumen IT 2026</p>
         </div>
 
-        <div style={{
-          display: 'flex',
-          gap: '1.5rem',
-          justifyContent: 'center',
-          flexWrap: 'wrap',
-        }}>
-          {mentors.map(m => (
-            <PersonCard key={m.name} {...m} />
-          ))}
-        </div>
-      </section>
-
-      {/* ===== COORDINATORS SECTION ===== */}
-      <section style={{
-        padding: 'clamp(3rem, 6vw, 6rem) clamp(1.5rem, 5vw, 8rem)',
-      }}>
-        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <p className="section-label">Student Team</p>
-          <h2 className="section-title">
-            <span style={{ color: '#f0f4ff' }}>The </span>
-            <span className="gradient-text">Coordinators</span>
-          </h2>
+        {/* SUB-SECTION: MENTORS */}
+        <div style={{ marginBottom: '6rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '3rem', justifyContent: 'center' }}>
+            <div style={{ height: '1px', background: 'rgba(0,0,0,0.08)', flex: 1, maxWidth: '100px' }} />
+            <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#888' }}>
+              Faculty Mentors
+            </h3>
+            <div style={{ height: '1px', background: 'rgba(0,0,0,0.08)', flex: 1, maxWidth: '100px' }} />
+          </div>
+          <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap', maxWidth: '1300px', margin: '0 auto' }}>
+            {mentors.map((m, i) => <PersonCard key={i} {...m} />)}
+          </div>
         </div>
 
-        <div style={{
-          display: 'flex',
-          gap: '1.5rem',
-          justifyContent: 'center',
-          flexWrap: 'wrap',
-        }}>
-          {coordinators.map(c => (
-            <PersonCard key={c.name} {...c} />
-          ))}
-        </div>
-      </section>
-
-      {/* ===== CTA SECTION ===== */}
-      <section style={{
-        padding: 'clamp(4rem, 8vw, 8rem) clamp(1.5rem, 5vw, 8rem)',
-        textAlign: 'center',
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'radial-gradient(ellipse at center, rgba(124,58,237,0.15) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
-
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          <h2 style={{
-            fontFamily: 'var(--font-display)',
-            fontWeight: 700,
-            fontSize: 'clamp(2rem, 6vw, 4rem)',
-            lineHeight: 1.1,
-            marginBottom: '1.25rem',
-          }}>
-            <span style={{ color: '#f0f4ff' }}>Ready to </span>
-            <span className="gradient-text">Compete?</span>
-          </h2>
-          <p style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-            color: 'rgba(148,163,184,0.75)',
-            marginBottom: '2.5rem',
-            maxWidth: '480px',
-            margin: '0 auto 2.5rem',
-          }}>
-            Browse all events and register before April 16, 2026.
-          </p>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/register" className="btn-primary" style={{ fontSize: '1rem' }}>
-              Register Now →
-            </Link>
+        {/* SUB-SECTION: COORDINATORS */}
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '3rem', justifyContent: 'center' }}>
+            <div style={{ height: '1px', background: 'rgba(0,0,0,0.08)', flex: 1, maxWidth: '100px' }} />
+            <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#888' }}>
+              Student Coordinators
+            </h3>
+            <div style={{ height: '1px', background: 'rgba(0,0,0,0.08)', flex: 1, maxWidth: '100px' }} />
+          </div>
+          <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap', maxWidth: '1300px', margin: '0 auto' }}>
+            {coordinators.map((c, i) => <PersonCard key={i} {...c} />)}
           </div>
         </div>
       </section>
 
-      {/* ===== FOOTER ===== */}
+      {/* 5. FOOTER */}
       <footer style={{
-        padding: '2rem clamp(1.5rem, 5vw, 8rem)',
-        borderTop: '1px solid rgba(0,245,255,0.08)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '1rem',
+        padding: '6rem 1.5rem 3rem',
+        borderTop: '1px solid rgba(0,0,0,0.06)',
+        textAlign: 'center',
+        background: '#ffffff'
       }}>
-        <div style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.75rem',
-          color: 'rgba(148,163,184,0.5)',
-          letterSpacing: '0.05em',
-        }}>
-          © 2026 ACUMEN IT · Vasavi College of Engineering (A)
-        </div>
-        <div style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.7rem',
-          color: 'rgba(0,245,255,0.4)',
-          letterSpacing: '0.1em',
-        }}>
-          DEPARTMENT OF INFORMATION TECHNOLOGY
+        <div style={{ marginBottom: '2rem', fontWeight: 800, fontSize: '1.5rem' }}>ACUMEN IT</div>
+        <p style={{ color: '#999', fontSize: '0.85rem', maxWidth: '500px', margin: '0 auto 2rem' }}>
+          Organized by the Department of Information Technology, Vasavi College of Engineering (Autonomous).
+        </p>
+        <div style={{ fontSize: '0.75rem', color: '#bbb', letterSpacing: '0.1em' }}>
+          © 2026 ALL RIGHTS RESERVED
         </div>
       </footer>
-
     </main>
   )
 }

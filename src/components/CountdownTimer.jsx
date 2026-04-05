@@ -33,34 +33,22 @@ export default function CountdownTimer() {
       <div style={{ textAlign: 'center' }}>
         <p style={{
           fontFamily: 'var(--font-mono)',
-          color: '#00f5ff',
+          color: '#000',
           fontSize: '1.2rem',
-          letterSpacing: '0.1em',
-          animation: 'flicker 2s infinite',
+          fontWeight: '700',
+          letterSpacing: '0.2em',
         }}>
-           EVENT IS LIVE_
+           THE EVENT IS LIVE
         </p>
       </div>
     )
   }
 
   return (
-    <div>
-      <p style={{
-        fontFamily: 'var(--font-mono)',
-        fontSize: '1.1rem',
-        letterSpacing: '0.15em',
-        color: 'rgba(0,245,255,0.7)',
-        textTransform: 'uppercase',
-        textAlign: 'center',
-        marginBottom: '1.5rem',
-      }}>
-         Event Starts In
-      </p>
-
+    <div style={{ padding: '1rem 0' }}>
       <div style={{
         display: 'flex',
-        gap: 'clamp(0.5rem, 2vw, 1.25rem)',
+        gap: 'clamp(0.5rem, 2.5vw, 2rem)',
         justifyContent: 'center',
         flexWrap: 'wrap',
       }}>
@@ -69,38 +57,26 @@ export default function CountdownTimer() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '0.4rem',
+            gap: '0.8rem',
           }}>
             <div style={{
-              background: 'rgba(0, 245, 255, 0.05)',
-              border: '1px solid rgba(0, 245, 255, 0.25)',
-              borderRadius: '12px',
-              padding: 'clamp(0.75rem, 2vw, 1.25rem) clamp(1rem, 3vw, 2rem)',
-              minWidth: 'clamp(70px, 12vw, 100px)',
+              background: '#ffffff', // Pure white card
+              border: '1px solid rgba(0, 0, 0, 0.05)',
+              borderRadius: '20px',
+              padding: 'clamp(1rem, 2.5vw, 1.5rem)',
+              minWidth: 'clamp(80px, 15vw, 120px)',
               textAlign: 'center',
-              position: 'relative',
-              overflow: 'hidden',
-              boxShadow: '0 0 20px rgba(0,245,255,0.08), inset 0 1px 0 rgba(0,245,255,0.1)',
-              animation: 'pulse-glow 3s ease-in-out infinite',
-              animationDelay: `${i * 0.4}s`,
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.02)', // Very subtle shadow
+              transition: 'transform 0.3s ease',
             }}>
-              {/* Top highlight */}
-              <div style={{
-                position: 'absolute',
-                top: 0, left: 0, right: 0,
-                height: '1px',
-                background: 'linear-gradient(90deg, transparent, rgba(0,245,255,0.5), transparent)',
-              }} />
-
               <span style={{
                 display: 'block',
                 fontFamily: 'var(--font-mono)',
-                fontWeight: 700,
-                fontSize: 'clamp(1.8rem, 5vw, 2.8rem)',
-                color: '#00f5ff',
+                fontWeight: 800,
+                fontSize: 'clamp(2rem, 6vw, 3.5rem)',
+                color: '#000000', // Sharp black
                 lineHeight: 1,
                 letterSpacing: '-0.02em',
-                textShadow: '0 0 20px rgba(0,245,255,0.8)',
               }}>
                 {pad(time[unit])}
               </span>
@@ -108,10 +84,11 @@ export default function CountdownTimer() {
 
             <span style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.65rem',
-              letterSpacing: '0.2em',
+              fontSize: '0.75rem',
+              fontWeight: '600',
+              letterSpacing: '0.25em',
               textTransform: 'uppercase',
-              color: 'rgba(148, 163, 184, 0.7)',
+              color: '#999999', // Muted grey
             }}>
               {labels[i]}
             </span>
