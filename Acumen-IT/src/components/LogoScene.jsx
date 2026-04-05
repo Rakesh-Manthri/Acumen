@@ -17,8 +17,8 @@ function Logo({ url }) {
       child.receiveShadow = true
       if (child.material) {
         const mat = child.material.clone()
-        mat.color.set('#00ccffff') // Force lime green color
-        mat.emissive = new THREE.Color('#00ccffff')
+        mat.color.set('#00f5ff') // Force aqua color
+        mat.emissive = new THREE.Color('#00f5ff')
         mat.emissiveIntensity = 0.5
         mat.envMapIntensity = 1.5
         child.material = mat
@@ -96,8 +96,8 @@ function FallbackLogo() {
     <mesh ref={meshRef} scale={1.5}>
       <octahedronGeometry args={[1, 0]} />
       <meshStandardMaterial
-        color="#00ccff"
-        emissive="#00ccff"
+        color="#00f5ff"
+        emissive="#00f5ff"
         emissiveIntensity={0.6}
         metalness={0.9}
         roughness={0.1}
@@ -111,7 +111,7 @@ function SceneContent({ hasGlb }) {
   return (
     <>
       <ambientLight intensity={0.3} />
-      <pointLight position={[5, 5, 5]} intensity={2} color="#00ccff" />
+      <pointLight position={[5, 5, 5]} intensity={2} color="#00f5ff" />
       <pointLight position={[-5, -3, -5]} intensity={1.5} color="#0077ff" />
       <spotLight position={[0, 8, 0]} intensity={1} angle={0.4} color="#ffffff" />
 
