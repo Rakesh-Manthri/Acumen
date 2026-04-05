@@ -35,9 +35,10 @@ function FloatingField({ id, label, error, children, required }) {
         fontSize: '0.7rem',
         letterSpacing: '0.12em',
         textTransform: 'uppercase',
-        color: error ? '#f87171' : 'rgba(0,245,255,0.65)',
+        fontWeight: 600,
+        color: error ? 'var(--accent-pink)' : 'var(--text-secondary)',
       }}>
-        {label}{required && <span style={{ color: '#f87171', marginLeft: '2px' }}>*</span>}
+        {label}{required && <span style={{ color: 'var(--accent-pink)', marginLeft: '2px' }}>*</span>}
       </label>
       {children}
       {error && (
@@ -58,10 +59,10 @@ function FloatingField({ id, label, error, children, required }) {
 const inputStyle = (hasError) => ({
   width: '100%',
   padding: '0.85rem 1rem',
-  background: 'rgba(5,5,16,0.8)',
-  border: `1px solid ${hasError ? 'rgba(248,113,113,0.5)' : 'rgba(0,245,255,0.15)'}`,
+  background: 'var(--bg-secondary)',
+  border: `1px solid ${hasError ? 'rgba(248,113,113,0.5)' : 'var(--border-subtle)'}`,
   borderRadius: '10px',
-  color: '#f0f4ff',
+  color: 'var(--text-primary)',
   fontFamily: 'var(--font-display)',
   fontSize: '0.95rem',
   outline: 'none',
@@ -73,7 +74,7 @@ const selectStyle = (hasError) => ({
   ...inputStyle(hasError),
   appearance: 'none',
   WebkitAppearance: 'none',
-  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300f5ff' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
+  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300878e' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'right 1rem center',
   paddingRight: '2.5rem',
@@ -217,13 +218,13 @@ export default function Register() {
             fontSize: 'clamp(2.25rem, 7vw, 4rem)',
             marginBottom: '0.75rem',
           }}>
-            <span style={{ color: '#f0f4ff' }}>Event </span>
+            <span style={{ color: 'var(--text-primary)' }}>Event </span>
             <span className="gradient-text">Registration</span>
           </h1>
           <p style={{
             fontFamily: 'var(--font-display)',
             fontSize: '1rem',
-            color: 'rgba(148,163,184,0.7)',
+            color: 'var(--text-secondary)',
           }}>
             Fill the form below · April 16, 2026
           </p>
@@ -262,7 +263,7 @@ export default function Register() {
                 <div style={{
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.65rem',
-                  color: 'rgba(148,163,184,0.6)',
+                  color: 'var(--text-muted)',
                   letterSpacing: '0.05em',
                 }}>
                   {selectedEvent.team} · {selectedEvent.mode}
@@ -277,8 +278,8 @@ export default function Register() {
             onSubmit={handleSubmit(onSubmit)}
             noValidate
             style={{
-              background: 'rgba(8, 8, 32, 0.75)',
-              border: '1px solid rgba(0,245,255,0.12)',
+              background: 'var(--glass-bg)',
+              border: '1px solid var(--border-subtle)',
               borderRadius: '24px',
               padding: 'clamp(1.5rem, 4vw, 2.5rem)',
               backdropFilter: 'blur(16px)',
@@ -303,7 +304,8 @@ export default function Register() {
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.7rem',
                 letterSpacing: '0.15em',
-                color: 'rgba(0,245,255,0.5)',
+                fontWeight: 600,
+                color: 'var(--accent-cyan)',
                 textTransform: 'uppercase',
               }}>
                 &gt; registration.form
@@ -323,9 +325,9 @@ export default function Register() {
                   onFocus={e => { e.target.style.borderColor = 'rgba(0,245,255,0.5)'; e.target.style.boxShadow = '0 0 15px rgba(0,245,255,0.1)' }}
                   onBlur={e => { e.target.style.borderColor = errors.event ? 'rgba(248,113,113,0.5)' : 'rgba(0,245,255,0.15)'; e.target.style.boxShadow = 'none' }}
                 >
-                  <option value="" style={{ background: '#0d0d2b' }}>-- Select an event --</option>
+                  <option value="" style={{ background: 'var(--bg-secondary)' }}>-- Select an event --</option>
                   {events.map(ev => (
-                    <option key={ev.id} value={ev.id} style={{ background: '#0d0d2b' }}>
+                    <option key={ev.id} value={ev.id} style={{ background: 'var(--bg-secondary)' }}>
                       {ev.emoji} {ev.title} ({ev.category})
                     </option>
                   ))}
@@ -417,9 +419,9 @@ export default function Register() {
                   onFocus={e => { e.target.style.borderColor = 'rgba(0,245,255,0.5)'; e.target.style.boxShadow = '0 0 15px rgba(0,245,255,0.1)' }}
                   onBlur={e => { e.target.style.borderColor = errors.dept ? 'rgba(248,113,113,0.5)' : 'rgba(0,245,255,0.15)'; e.target.style.boxShadow = 'none' }}
                 >
-                  <option value="" style={{ background: '#0d0d2b' }}>-- Select Department --</option>
+                  <option value="" style={{ background: 'var(--bg-secondary)' }}>-- Select Department --</option>
                   {DEPTS.map(d => (
-                    <option key={d} value={d} style={{ background: '#0d0d2b' }}>{d}</option>
+                    <option key={d} value={d} style={{ background: 'var(--bg-secondary)' }}>{d}</option>
                   ))}
                 </select>
               </FloatingField>
@@ -435,9 +437,9 @@ export default function Register() {
                   onFocus={e => { e.target.style.borderColor = 'rgba(0,245,255,0.5)'; e.target.style.boxShadow = '0 0 15px rgba(0,245,255,0.1)' }}
                   onBlur={e => { e.target.style.borderColor = errors.section ? 'rgba(248,113,113,0.5)' : 'rgba(0,245,255,0.15)'; e.target.style.boxShadow = 'none' }}
                 >
-                  <option value="" style={{ background: '#0d0d2b' }}>-- Section --</option>
+                  <option value="" style={{ background: 'var(--bg-secondary)' }}>-- Section --</option>
                   {SECTIONS.map(s => (
-                    <option key={s} value={s} style={{ background: '#0d0d2b' }}>{s}</option>
+                    <option key={s} value={s} style={{ background: 'var(--bg-secondary)' }}>{s}</option>
                   ))}
                 </select>
               </FloatingField>
@@ -494,7 +496,7 @@ export default function Register() {
                   <p style={{
                     fontFamily: 'var(--font-display)',
                     fontSize: '0.9rem',
-                    color: fileName ? '#00f5ff' : 'rgba(148,163,184,0.6)',
+                    color: fileName ? 'var(--accent-cyan)' : 'var(--text-secondary)',
                     marginBottom: '0.25rem',
                   }}>
                     {fileName || 'Click or drag & drop your payment screenshot'}
@@ -502,7 +504,7 @@ export default function Register() {
                   <p style={{
                     fontFamily: 'var(--font-mono)',
                     fontSize: '0.65rem',
-                    color: 'rgba(148,163,184,0.4)',
+                    color: 'var(--text-muted)',
                     letterSpacing: '0.05em',
                   }}>
                     JPG, PNG, PDF · Max 5MB
@@ -539,7 +541,7 @@ export default function Register() {
             <p style={{
               fontFamily: 'var(--font-mono)',
               fontSize: '0.65rem',
-              color: 'rgba(148,163,184,0.4)',
+              color: 'var(--text-muted)',
               textAlign: 'center',
               letterSpacing: '0.05em',
               lineHeight: 1.65,

@@ -85,7 +85,7 @@ export default function Events() {
       width: '100vw',
       display: 'flex',
       flexDirection: 'column',
-      backgroundColor: '#050510',
+      backgroundColor: 'var(--bg-primary)',
       position: 'relative',
       overflowX: 'hidden',
       overflowY: isMobile ? 'hidden' : 'auto',
@@ -109,7 +109,7 @@ export default function Events() {
         fontFamily: 'var(--font-display)',
         fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
         fontWeight: 700,
-        color: '#ffffff',
+        color: 'var(--text-primary)',
         letterSpacing: '0.02em',
         zIndex: 2,
         position: 'relative'

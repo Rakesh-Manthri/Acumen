@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import LogoScene from '../components/LogoScene'
 import CountdownTimer from '../components/CountdownTimer'
 
 const mentors = [
@@ -142,18 +141,8 @@ export default function Home() {
             gap: '2rem',
           }}
         >
-          {/* Left Column - 3D Logo */}
-          <div className="animate-in hero-logo-column" style={{ 
-            flex: '1 1 45%', 
-            height: 'clamp(400px, 60vh, 700px)', 
-            position: 'relative',
-            opacity: 0,
-          }}>
-            <LogoScene hasGlb={true} />
-          </div>
-
-          {/* Right Column - Text Content */}
-          <div style={{ flex: '1 1 55%', maxWidth: '650px' }}>
+          {/* Center Column - Text Content */}
+          <div style={{ flex: 1, maxWidth: '800px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
             <div className="animate-in" style={{
               fontFamily: 'var(--font-mono)',
               fontSize: 'min(1rem, 3.5vw)',
@@ -209,6 +198,9 @@ export default function Home() {
         </div>
 
         <style>{`
+          .hero-container {
+            justify-content: center !important;
+          }
           @media (max-width: 991px) {
             .hero-container {
               flex-direction: column !important;

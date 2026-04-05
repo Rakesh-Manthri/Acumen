@@ -23,6 +23,27 @@
   --border-glow: rgba(0, 245, 255, 0.4);
   --glass-bg: rgba(8, 8, 32, 0.7);
   --glass-border: rgba(124, 58, 237, 0.3);
+}
+
+body.light-theme {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.95);
+
+  --accent-cyan: #006064;
+  --accent-violet: #4c1d95;
+  --accent-violet-light: #6d28d9;
+  --accent-pink: #be185d;
+
+  --text-primary: #000000;
+  --text-secondary: #1e293b;
+  --text-muted: #334155;
+
+  --border-subtle: rgba(0, 0, 0, 0.15);
+  --border-glow: rgba(0, 96, 100, 0.4);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.2);
 
   /* Typography */
   --font-display: 'Space Grotesk', sans-serif;

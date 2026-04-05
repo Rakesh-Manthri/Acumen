@@ -60,16 +60,16 @@ export default function Navbar() {
             pointerEvents: isOpen ? 'auto' : 'none',
             transform: isOpen ? 'translateX(0) scale(1)' : 'translateX(10px) scale(0.9)',
             transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+            backgroundColor: 'var(--glass-bg)',
             backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: '40px',
-            color: 'white',
+            color: 'var(--text-primary)',
             fontWeight: 800,
             fontFamily: 'var(--font-display)',
             fontSize: '1rem',
             letterSpacing: '0.1em',
-            boxShadow: '0 10px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
@@ -81,12 +81,12 @@ export default function Navbar() {
         <div 
           className={`menu-pill ${isOpen ? 'open' : ''}`}
           style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+            backgroundColor: 'var(--glass-bg)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
-            color: 'white',
-            boxShadow: '0 10px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)',
+            border: '1px solid var(--border-subtle)',
+            color: 'var(--text-primary)',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3)',
             transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)',
             display: 'flex',
             alignItems: 'center',
@@ -141,28 +141,31 @@ export default function Navbar() {
 
         {/* Theme Oval Outside Menu */}
         <div 
-          className="theme-pill" 
+          className="theme-pill"
+          onClick={() => {
+             document.body.classList.toggle('light-theme');
+          }}
           style={{
             opacity: isOpen ? 1 : 0,
             pointerEvents: isOpen ? 'auto' : 'none',
             transform: isOpen ? 'translateX(0) scale(1)' : 'translateX(-10px) scale(0.9)',
             transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+            backgroundColor: 'var(--glass-bg)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: '40px',
-            color: 'white',
-            boxShadow: '0 10px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)',
+            color: 'var(--text-primary)',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer'
         }}>
           {/* Theme Logo Visual */}
-          <div style={{ display: 'flex', gap: '5px', flexDirection: 'column' }}>
-            <div style={{ width: '6px', height: '6px', backgroundColor: 'white', borderRadius: '1px' }} />
-            <div style={{ width: '6px', height: '6px', backgroundColor: 'rgba(255, 255, 255, 0.5)', borderRadius: '1px' }} />
+          <div style={{ display: 'flex', gap: '5px', flexDirection: 'column', pointerEvents: 'none' }}>
+            <div style={{ width: '6px', height: '6px', backgroundColor: 'var(--text-primary)', borderRadius: '1px' }} />
+            <div style={{ width: '6px', height: '6px', backgroundColor: 'var(--text-secondary)', borderRadius: '1px' }} />
           </div>
         </div>
       </div>
@@ -198,10 +201,10 @@ export default function Navbar() {
         }
 
         .nav-link {
-          color: rgba(255,255,255,0.75);
+          color: var(--text-secondary);
           text-decoration: none;
           font-family: var(--font-display);
-          font-weight: 500;
+          font-weight: 600;
           font-size: 0.9rem;
           padding: 0.5rem 1rem;
           border-radius: 40px;
@@ -209,12 +212,12 @@ export default function Navbar() {
           white-space: nowrap;
         }
         .nav-link:hover {
-          color: white;
-          background: rgba(255,255,255,0.1);
+          color: var(--text-primary);
+          background: rgba(0,0,0,0.05);
         }
         .nav-link.active {
-          color: #000;
-          background: white;
+          color: #fff;
+          background: var(--accent-violet);
         }
 
         @media (max-width: 640px) {
