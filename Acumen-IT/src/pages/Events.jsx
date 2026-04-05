@@ -28,8 +28,8 @@ export default function Events() {
   }, []);
 
   // Responsive physics configuration
-  const itemWidth = isMobile ? 260 : 360;
-  const gap = isMobile ? 150 : 220;
+  const itemWidth = isMobile ? 210 : 360;
+  const gap = isMobile ? 130 : 180;
 
   const animatedScrollX = useRef(0);
   const targetScrollX = useRef(0);
@@ -81,14 +81,14 @@ export default function Events() {
 
   return (
     <div style={{
-      minHeight: '125vh', // Slightly scrollable page
+      minHeight: isMobile ? '100vh' : '125vh',
       width: '100vw',
       display: 'flex',
       flexDirection: 'column',
       backgroundColor: '#050510',
       position: 'relative',
       overflowX: 'hidden',
-      overflowY: 'auto',
+      overflowY: isMobile ? 'hidden' : 'auto',
       paddingTop: '6rem'
     }}>
       {/* Dynamic Background Glow */}
@@ -104,7 +104,7 @@ export default function Events() {
 
       <h1 style={{
         marginTop: '2rem',
-        marginBottom: '2rem',
+        marginBottom: '-5rem',
         textAlign: 'center',
         fontFamily: 'var(--font-display)',
         fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
@@ -135,7 +135,7 @@ export default function Events() {
           alignItems: 'center',
           justifyContent: 'center',
           cursor: isDragging ? 'grabbing' : 'grab',
-          touchAction: 'pan-y', // Allow browser page scrolling vertically
+          touchAction: isMobile ? 'none' : 'pan-y',
           zIndex: 2
         }}
       >
@@ -148,22 +148,34 @@ export default function Events() {
           const normalizedDistance = wrappedDistance / gap;
           const absDist = Math.abs(normalizedDistance);
 
-          // Layout scaling values based on screen width target requests: (5 for desktop, 3 for mobile)
-          const translateXShift = isMobile ? 0.65 : 0.6; // Push overlapping elements
-          const translateX = normalizedDistance * -itemWidth * translateXShift;
+          // --- 'Spin & See' Exact Carousel Physics ---
 
-          const scale = Math.max(0.3, 1 - absDist * 0.25);
+          // 1. Asymptotic Positional Gathering (Clustering)
+          // Elements fold backward progressively tightening together rather than distancing linearly
+          const baseSpread = isMobile ? 140 : 280;
+          const exponentialShift = baseSpread * Math.log(1 + absDist * 1.5);
+
+          // normalizedDistance > 0 means the item physically lives to the left!
+          const translateX = Math.sign(normalizedDistance) * -exponentialShift;
+
+          // 2. Aggressive Parabolic Scale Drop
+          // Center is nearly 1.0, neighbors shrink exponentially
+          const scale = Math.max(0, 1 - absDist * 0.1 - Math.pow(absDist, 1.4) * 0.1);
+
+          // 3. Z-Index enforcing precise depth hierarchy
           const zIndex = 100 - Math.round(absDist * 10);
 
-          // Ensure Mobile fades faster to maintain exactly a 3-card primary view focus, Desktop slower for 5
-          const fadeoutMultiplier = isMobile ? 0.1 : 0.1;
-          const opacity = Math.max(0, 1 - absDist * fadeoutMultiplier);
+          // 4. Ghosting (Opacity)
+          // Primary side cards remain 100% opaque, fading rapidly only at the deep loop edges so they don't visibly pop across the toroid back.
+          const opacity = absDist >= 2.5 ? Math.max(0, 1 - (absDist - 2.5) * 2) : 1;
 
-          const clipY = Math.min(25, absDist * 12);
-          const clipX = Math.min(10, absDist * 6);
-          const clipPath = `inset(${clipY}% ${clipX}% round 16px)`;
+          // 5. Cinematic Vertical Squish (Clip Path distortion)
+          // Hits high values like 30% only when pushed backwards in the stack
+          const clipY = Math.min(30, Math.pow(absDist, 1.4) * 7);
+          const clipPath = `inset(${clipY}% 0% round 16px)`;
 
-          const brightness = Math.max(0.2, 1 - absDist * 0.4);
+          // Lighting map
+          const brightness = Math.max(0.3, 1 - absDist * 0.4);
 
           return (
             <div
@@ -187,7 +199,7 @@ export default function Events() {
                 clipPath: clipPath,
                 overflow: 'hidden',
                 backgroundColor: 'black',
-                boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+                boxShadow: absDist < 0.5 ? '0 20px 60px rgba(0,0,0,0.6)' : 'none',
                 filter: `brightness(${brightness})`,
                 transition: 'none'
               }}>
