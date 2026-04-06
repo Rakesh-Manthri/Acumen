@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import CountdownTimer from '../components/CountdownTimer'
 import Navbar from '../components/Navbar'
 import LogoScene from '../components/LogoScene'
-import Lanyard from '../components/lanyard'
+import Lanyard from '../components/Lanyard'
 
 const mentors = [
   { name: 'Dr. S. V. Ramana', role: 'Principal', initial: 'R' },
@@ -116,15 +116,6 @@ export default function Home() {
         <p className="animate-in" style={{ maxWidth: '650px', margin: '0 auto 3rem', color: '#555', fontSize: '1.2rem', lineHeight: 1.6 }}>
           Experience a day of intense competition, technical workshops, and innovative displays at the premier annual IT symposium.
         </p>
-        <div className="animate-in">
-          <Link to="/register" style={{ 
-            background: '#000', color: '#fff', padding: '1.2rem 3rem', 
-            borderRadius: '100px', fontWeight: 600, textDecoration: 'none',
-            fontSize: '1.1rem', boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
-          }}>
-            Explore Events ↗
-          </Link>
-        </div>
       </section>
 
       {/* 4. COUNTDOWN SECTION */}
