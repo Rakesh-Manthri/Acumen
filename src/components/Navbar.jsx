@@ -2,15 +2,25 @@ import { useState, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [showBadge, setShowBadge] = useState(false)
-  
   // Hook to get current URL path
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
+  const [isOpen, setIsOpen] = useState(false)
+  const [showBadge, setShowBadge] = useState(false)
+  const [isVisible, setIsVisible] = useState(!isHomePage);
+
   // On home page: the pill background appears as you scroll
-  const badgeVisible = !isHomePage || showBadge;
+  const badgeVisible = (!isHomePage || showBadge) && isVisible;
+
+  useEffect(() => {
+    if (isHomePage) {
+      const timer = setTimeout(() => setIsVisible(true), 4500);
+      return () => clearTimeout(timer);
+    } else {
+      setIsVisible(true);
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -79,7 +89,13 @@ export default function Navbar() {
       }}>
         <div 
           className="nav-group-wrapper"
-          style={{ display: 'flex', alignItems: 'flex-end', pointerEvents: 'auto' }}
+          style={{ 
+            display: 'flex', 
+            alignItems: 'flex-end', 
+            pointerEvents: badgeVisible ? 'auto' : 'none',
+            opacity: badgeVisible ? 1 : 0,
+            transition: 'opacity 0.8s ease'
+          }}
           onMouseEnter={() => setIsOpen(true)}
           onMouseLeave={() => setIsOpen(false)}
         >

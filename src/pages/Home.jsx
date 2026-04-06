@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import CountdownTimer from '../components/CountdownTimer'
 import Navbar from '../components/Navbar'
 import LogoScene from '../components/LogoScene'
+import Lanyard from '../components/Lanyard'
 
 const mentors = [
   { name: 'Dr. S. V. Ramana', role: 'Principal', initial: 'R' },
@@ -115,15 +116,6 @@ export default function Home() {
         <p className="animate-in" style={{ maxWidth: '650px', margin: '0 auto 3rem', color: '#555', fontSize: '1.2rem', lineHeight: 1.6 }}>
           Experience a day of intense competition, technical workshops, and innovative displays at the premier annual IT symposium.
         </p>
-        <div className="animate-in">
-          <Link to="/register" style={{ 
-            background: '#000', color: '#fff', padding: '1.2rem 3rem', 
-            borderRadius: '100px', fontWeight: 600, textDecoration: 'none',
-            fontSize: '1.1rem', boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
-          }}>
-            Explore Events ↗
-          </Link>
-        </div>
       </section>
 
       {/* 4. COUNTDOWN SECTION */}
@@ -179,7 +171,50 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. FOOTER */}
+      {/* 6. CONTACT INTERACTION SECTION */}
+      <section style={{ padding: '4rem 1.5rem', position: 'relative', zIndex: 2 }}>
+        <div className="animate-in" style={{ 
+          display: 'flex', 
+          flexWrap: 'wrap', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          background: '#ffffff',
+          borderRadius: '40px',
+          padding: '2rem',
+          maxWidth: '1200px',
+          margin: '0 auto',
+          boxShadow: '0 40px 100px rgba(0,0,0,0.04)',
+        }}>
+          {/* LEFT: 3D INTERACTION */}
+          <div style={{ width: '100%', maxWidth: '600px', height: '60vh', position: 'relative' }}>
+            <Lanyard />
+            <div style={{ position: 'absolute', bottom: '5%', left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#999', letterSpacing: '0.2em', whiteSpace: 'nowrap' }}>
+              CLICK AND DRAG TO INTERACT
+            </div>
+          </div>
+
+          {/* RIGHT: CONTACT TEXT */}
+          <div style={{ maxWidth: '450px', padding: '2rem' }}>
+            <h2 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '1.5rem', letterSpacing: '-0.04em' }}>Get in touch.</h2>
+            <p style={{ fontSize: '1rem', color: '#555', lineHeight: 1.6, marginBottom: '2.5rem' }}>
+              Have questions about Acumen IT 2026? Reach out to our team or visit us at the IT Department, Vasavi College of Engineering.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              <div>
+                <p style={{ fontWeight: 800, textTransform: 'uppercase', fontSize: '0.7rem', color: '#999', marginBottom: '0.5rem' }}>General Inquiries</p>
+                <a href="mailto:acumenit@vce.ac.in" style={{ fontSize: '1.1rem', color: '#000', textDecoration: 'none', fontWeight: 700 }}>acumenit@vce.ac.in</a>
+              </div>
+              <div>
+                <p style={{ fontWeight: 800, textTransform: 'uppercase', fontSize: '0.7rem', color: '#999', marginBottom: '0.5rem' }}>Student Leads</p>
+                <p style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0 }}>+91 98765 43210</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. FOOTER */}
       <footer style={{
         padding: '5rem 1.5rem 3rem',
         background: '#F1EFE9', 
