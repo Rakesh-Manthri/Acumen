@@ -47,7 +47,7 @@ const LogoScene = () => {
     Mobile (isMobile = true): Decreased from 0.88 to 0.82 to push it DOWN.
   */
   const desktopHeaderPos = (height / 2) * 0.84; 
-  const mobileHeaderPos = (height / 2) * 0.87;
+  const mobileHeaderPos = (height / 2) * 0.85;
   const headerYOffset = isMobile ? mobileHeaderPos : desktopHeaderPos;
 
   const { basePoints, count } = state.current;
