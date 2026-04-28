@@ -38,7 +38,7 @@ export default function CountdownTimer() {
           fontWeight: '700',
           letterSpacing: '0.2em',
         }}>
-           THE EVENT IS LIVE
+           THE EVENT IS CLOSED
         </p>
       </div>
     )
